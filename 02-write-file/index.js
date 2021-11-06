@@ -12,38 +12,24 @@ const rl = readLine.createInterface({
     output: process.stdout
   });
   
-  rl.question(`Whats your name? `, (name) => {
+ rl.question(`Whats your name? `, (name) => {
       if (name === 'exit') {
         process.stdout.write(`Bye!`);
         rl.close();
       } else {
-          writeStream.write(name);
-          process.stdout.write(`Hi ${name}!\n`);
+          writeStream.write(`${name}\n`);
+          process.stdout.write(`Hi ${name}!\nsomething else?`);
+          
       }
       rl.on('line', (input) => {
         if (input === 'exit') {
-        rl.close();
-      }  
+          rl.close();}
+        else {
+          process.stdout.write(`something else?\n`);
+          writeStream.write(`${input}\n`);
+        }
       })
       .on('close', () => {
           stdout.write('Good bye')
       });
-
-      
-      
-    //   else if (name){
-    //        process.stdout.write(`Hi ${name}!`);
-    //        writeStream.write(`${name}\n`);
-    //   }
-//   console.log(`Hi ${name}!`);
-
-//   process.stdin.write(name);
   })
-
-  rl.on('error', (err) => {
-      if (err.code == 'ENDENT') {
-          console.log('File is not found')
-      } else {
-          console.error(err);
-      }
-  });
