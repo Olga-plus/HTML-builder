@@ -16,12 +16,13 @@ const adress = path.join('04-copy-directory', 'files');
 // fs.createReadStream(adress).pipe(fs.createWriteStream(adressCopy)); // copy dyrectory
 const fsPromises = fs.promises;
 
+
 fs.stat(adressCopy, function(err) {
         if (!err) {
             console.log('The directory already exists');
-    fs.readdir(adress, (err, files) => {
+    fsPromises.readdir(adress).then(function() { 
         if (err) throw err;
-        console.log(files.length, 'BBBBB');
+        // console.log(files.length, 'BBBBB');
         getAllFiles(adressCopy);
         copyFun(adress);
         })
@@ -41,28 +42,86 @@ fs.stat(adressCopy, function(err) {
     }
 });
 
+
+
+// fs.stat(adressCopy, function(err) {
+//         if (!err) {
+//             console.log('The directory already exists');
+//     fs.readdir(adress, (err, files) => {
+//         if (err) throw err;
+//         console.log(files.length, 'BBBBB');
+//         getAllFiles(adressCopy);
+//         copyFun(adress);
+//         })
+// }
+//         else if (err.code === 'ENOENT') {
+//          console.log('create folder');
+
+//         fsPromises.mkdir(adressCopy).then(function() {
+//             console.log('Directory created successfully');
+
+//             copyFun (adress);
+    
+//         })
+//         .catch(function() {
+//             console.log('failed to create directory');
+//         });
+//     }
+// });
+
 // ------------------------------------------------------------------------------------------------------------------------/
 
+// function getAllFiles(adressCopy) {
+//     fsPromises.readdir(adressCopy).then(function(){
+
+//         if (err) throw err;
+//         for (let file of files) {
+//             fs.stat(adressCopy + '/' + file, (err, stats) => {
+//                 if (err) throw err;
+
+//                 if (!stats.isDirectory()){
+//                         console.log(fs.unlink(adressCopy + '/' + file, (err) => {
+//                         if (err) throw err;}));
+//                 }
+
+//                 if (stats.isDirectory()){
+//                     console.log(fs.rmdir(adressCopy + '/' + file, (err) => {
+//                     if (err) throw err;}));
+//                 }
+
+//                 getAllFiles(adressCopy + '/' + file)                
+//             })
+//         }
+//     }). catch(function() {
+//         console.log('without changes');
+//     });
+
+    
+// }
+
+
+
+
+
 function getAllFiles(adressCopy) {
-    fs.readdir(adressCopy, {recursive: true, force: true},(err, files) => {
+    fs.readdir(adressCopy, (err, files) => {
         if (err) throw err;
+
         for (let file of files) {
             fs.stat(adressCopy + '/' + file, (err, stats) => {
                 if (err) throw err;
 
                 if (!stats.isDirectory()){
-                        console.log(fs.unlink(adressCopy + '/' + file, (err) => {
+                        console.log(fsPromises.unlink(adressCopy + '/' + file, {recursive: true, force: true}).then(function(){
                         if (err) throw err;}));
                 }
 
                 if (stats.isDirectory()){
-                    getAllFiles(adressCopy + '/' + file)
-                    console.log(fs.rmdir(adressCopy + '/' + file, (err) => {
-                    if (err) throw err;})); }
+                    console.log(fsPromises.rm(adressCopy + '/' + file, {recursive: true, force: true}).then(function() {
+                    if (err) throw err;}))
+                }
 
-                
-                    // getAllFiles(adressCopy + '/' + file)
-                
+                getAllFiles(adressCopy + '/' + file)                
             })
         }
     })
@@ -72,7 +131,9 @@ function copyFun(adress) {
     fs.readdir(adress, (err, files) => {
         if (err) throw err;
         console.log(files.length, 'COPY FILES');
+       
         for (let file of files) {
+           
             fs.stat(adress + '/' + file, (err, stats) => {
                 if(err) throw err;
                 let way =  path.join(adressCopy + '/' + file);
@@ -82,38 +143,31 @@ function copyFun(adress) {
                      if(err) throw err;  
                      console.log('File copied successfully');});
                     } else if (stats.isDirectory()) {
-                       
-                        fs.stat(way, function(err) {
-                            if (!err) {
-                                       console.log('CREATE the directory');
-                                fs.readdir(wayCopy, (err, files) => {
-                                    if (err) throw err;
-                                    console.log(files.length, 'BBBBB');
-                                    getAllFiles(way);
-                                    copyFun(wayCopy);
-                                    })
-                            }
-                                    else if (err.code === 'ENOENT') {
-                                     console.log('create folder');
-                                    // fs.mkdir(way, err => { //create folder
-                                    //     if (err) throw err;
-                                    //     console.log('jjjj', way + '/' + file)
-                                    //     // copyFun(wayCopy  + '/' + file );
-                                    // });
-                                    fsPromises.mkdir(way).then(function() {
-                                        console.log(' successfully');
-                            
-                                        copyFun (wayCopy);
-                                
-                                    })
-                                    .catch(function() {
-                                        console.log('failed to create directory');
-                                    });
-                                }
-                        })
+                         console.log('The directory');
+                        // fs.stat(way, function(err) {
+                        //     if (!err) {
+                        //                console.log('The directory');
+                        //         fs.readdir(wayCopy, (err, files) => {
+                        //             if (err) throw err;
+                        //             console.log(files.length, 'BBBBB');
+                        //             getAllFiles(way);
+                        //             copyFun(wayCopy);
+                        //             })
+                        //     }
+                        //             else if (err.code === 'ENOENT') {
+                        //              console.log('create folder');
+                        //             fs.mkdir(way, err => { //create folder
+                        //                 if (err) throw err;
+                        //                 console.log('jjjj')
+                        //                 // copyFun(way);
+                        //             });
+                                    
+                        //         }                            
+                        // })
+
                     }
-            })
-        }
+})
+}
     })}
 
 

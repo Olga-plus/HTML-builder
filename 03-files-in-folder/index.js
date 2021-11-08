@@ -1,10 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const opendir = require('fs/promises');
-
 const adress = path.join('03-files-in-folder', '/secret-folder');
-
-let folderName = 'folder'
 
 fs.readdir(adress, (err, files) => {
     if (err) throw err;
@@ -17,8 +13,8 @@ fs.readdir(adress, (err, files) => {
                 let extName = path.extname(file);
                 let nameFile = file.toString().split()
                 let name = nameFile[0].split('.')[0];
-                let sizrFile = `${Math.floor(stats.size / 1024)} Kb`;
-                console.log( `File name: ${name}; extension: ${extName}; size: ${sizrFile}` ); 
+                let sizeFile = `${Math.round(stats.size / 1024)} Kb`;
+                console.log( `File name: ${name}; extension: ${extName}; size: ${sizeFile}` ); 
 
             }
         })
