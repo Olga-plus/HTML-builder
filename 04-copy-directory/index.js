@@ -4,16 +4,8 @@ const path = require('path');
 const opendir = require('fs/promises');
 let util = require('util');
 
-const adressCopy = path.join('04-copy-directory', 'files-copy');
-const adress = path.join('04-copy-directory', 'files');
-// const adressFolder = path.join('04-copy-directory', 'files');
-// const adress04 = path.join('04-copy-directory');
-// const folderName =  path.join('04-copy-directory', 'files');
-// const folderCopy =  path.join('04-copy-directory', 'files-copy');
-// const folder =  path.join('04-copy-directory', 'files-copy');
-
-// const way = path.join(dirr,file.name);
-// fs.createReadStream(adress).pipe(fs.createWriteStream(adressCopy)); // copy dyrectory
+const adressCopy = path.join(__dirname, 'files-copy');
+const adress = path.join(__dirname, 'files');
 const fsPromises = fs.promises;
 
 fs.stat(adressCopy, function(err) {
@@ -40,8 +32,6 @@ fs.stat(adressCopy, function(err) {
         });
     }
 });
-
-// ------------------------------------------------------------------------------------------------------------------------/
 
 function getAllFiles(adressCopy) {
     fs.readdir(adressCopy, {recursive: true, force: true},(err, files) => {
@@ -115,8 +105,6 @@ function copyFun(adress) {
             })
         }
     })}
-
-
 
 
 
