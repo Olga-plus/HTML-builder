@@ -13,7 +13,7 @@ fs.readdir(adress, (err, files) => {
                 let extName = path.extname(file);
                 let nameFile = file.toString().split()
                 let name = nameFile[0].split('.')[0];
-                let sizeFile = `${Math.round(stats.size / 1024)} Kb`;
+                let sizeFile = `${stats.size} b`;
                 console.log( `File name: ${name}; extension: ${extName}; size: ${sizeFile}` ); 
 
             }
