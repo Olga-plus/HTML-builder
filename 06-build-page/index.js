@@ -5,7 +5,11 @@ const fsPromises = fs.promises;
 const adresstoCopyAssets = path.join(__dirname, 'assets');
 
 const nameDirNew = path.join(__dirname, 'project-dist')
+
+
 const nameFileNew = path.join(__dirname, 'project-dist', 'index.html')
+
+
 const writeStream = fs.createWriteStream(nameFileNew);
 
 const createDir = fs.mkdir(nameDirNew,  {recursive: true, force: true},(err =>{
@@ -13,8 +17,10 @@ const createDir = fs.mkdir(nameDirNew,  {recursive: true, force: true},(err =>{
 }));
 
 
+
+
 async function readTemplate() {
-   let template = await fsPromises.readFile(path.join(__dirname, 'template.html'), {encoding: 'utf-8'});
+   let template = await fsPromises.readFile(path.join(__dirname, 'template.html'), {encoding: 'utf-8'}); // берем текст в переменную из template.html
    let component = /\{\{(.*?)\}\}/g;
    let listComponent = template.match(component);
 //    console.log(listComponent);
@@ -32,7 +38,7 @@ let rez = template;
     // console.log(coText);
     
     rez = rez.replace(`{{${comp}}}`, `${coText}`) 
-       console.log(rez,'--------------------------------');
+    //    console.log(rez,'--------------------------------');
       
    }
    writeStream .write(rez);
@@ -84,7 +90,6 @@ async function copyAssets(way, copyTo) {
             // console.log('Файл: ' + path.join(way, file.name));
             let wayFile = path.join(copyTo, file.name);
             const writeStream = fs.createWriteStream(wayFile);
-
          }
     }
 }
