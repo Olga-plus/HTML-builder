@@ -28,7 +28,6 @@ const readStream = new fs.ReadStream(adress, {encoding: 'utf-8'});
 // const writeStream = fs.createWriteStream(adressNew);
 
 readStream.on('data', (chunk) => {
-    console.log(chunk);
     process.stdout.write(chunk);
 });
 
